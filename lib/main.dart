@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:todo_application/infrastructures.dart';
+import 'package:todo_application/infrastructures/sqflite.dart';
 
 import 'package:todo_application/notifiers/todo_list_notifier.dart';
 
@@ -56,10 +56,11 @@ class MainPage extends ConsumerWidget {
       ),
       body: switch (ref.watch(todoListNotifierProvider)) {
         AsyncData(:final value) => RefreshIndicator(
-            child: TodoListView(todoList: value),
             onRefresh: () async {
               ref.watch(todoListNotifierProvider.notifier).getAllTodo();
-            }),
+            },
+            child: TodoListView(todoList: value),
+          ),
         AsyncError(:final error) => Center(child: Text('Error: $error')),
         _ => const Center(child: CircularProgressIndicator()),
       },

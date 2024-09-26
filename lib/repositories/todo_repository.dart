@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:todo_application/infrastructures.dart';
+import 'package:todo_application/infrastructures/sqflite.dart';
 import 'package:todo_application/models/todo_model.dart';
 
 final todoRepositoryProvider = Provider<TodoRepository>(
@@ -15,14 +15,6 @@ class TodoRepository {
 
   final Database _db;
 
-  int _boolToInt(bool value) {
-    return value ? 1 : 0;
-  }
-
-  bool _intToBool(int value) {
-    return (value == 1) ? true : false;
-  }
-
   Future<void> createTodo({
     required String description,
     required bool completed,
@@ -31,7 +23,7 @@ class TodoRepository {
       (txn) async {
         await txn.rawInsert(
           'INSERT INTO Todo(description, completed) VALUES(?, ?)',
-          [description, _boolToInt(completed)],
+          [description, boolToInt(completed)],
         );
       },
     );
@@ -67,7 +59,7 @@ class TodoRepository {
           (e) => Todo(
             id: e['id'] as int,
             description: e['description'] as String,
-            completed: _intToBool(e['completed'] as int),
+            completed: intToBool(e['completed'] as int),
           ),
         )
         .toList();
