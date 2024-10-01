@@ -29,7 +29,7 @@ class _CreateTodoDialogState extends ConsumerState<CreateTodoDialog> {
         ),
         ElevatedButton(
           onPressed: () {
-            ref.watch(todoListNotifierProvider.notifier).createTodo(
+            ref.watch(todoListProvider.notifier).createTodo(
                   description: description,
                   completed: false,
                 );

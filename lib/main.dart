@@ -54,11 +54,9 @@ class MainPage extends ConsumerWidget {
         },
         child: const Icon(Icons.add),
       ),
-      body: switch (ref.watch(todoListNotifierProvider)) {
+      body: switch (ref.watch(todoListProvider)) {
         AsyncData(:final value) => RefreshIndicator(
-            onRefresh: () async {
-              ref.watch(todoListNotifierProvider.notifier).getAllTodo();
-            },
+            onRefresh: () => ref.refresh(todoListProvider.future),
             child: TodoListView(todoList: value),
           ),
         AsyncError(:final error) => Center(child: Text('Error: $error')),

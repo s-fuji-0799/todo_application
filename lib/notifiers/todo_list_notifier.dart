@@ -5,12 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_application/models/todo_model.dart';
 import 'package:todo_application/repositories/todo_repository.dart';
 
-final todoListNotifierProvider =
-    AsyncNotifierProvider<TodoListNotifier, List<Todo>>(
-  () => TodoListNotifier(),
+final todoListProvider =
+    AsyncNotifierProvider.autoDispose<TodoList, List<Todo>>(
+  () => TodoList(),
 );
 
-class TodoListNotifier extends AsyncNotifier<List<Todo>> {
+class TodoList extends AutoDisposeAsyncNotifier<List<Todo>> {
   Future<List<Todo>> _fetchTodoList() async {
     final todoRepository = ref.watch(todoRepositoryProvider);
     return await todoRepository.readAllTodo();
@@ -21,16 +21,10 @@ class TodoListNotifier extends AsyncNotifier<List<Todo>> {
     return _fetchTodoList();
   }
 
-  Future<void> getAllTodo() async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(_fetchTodoList);
-  }
-
   Future<void> createTodo({
     required String description,
     required bool completed,
   }) async {
-    state = const AsyncValue.loading();
     state = await AsyncValue.guard(
       () async {
         final todoRepository = ref.watch(todoRepositoryProvider);
@@ -41,8 +35,7 @@ class TodoListNotifier extends AsyncNotifier<List<Todo>> {
     );
   }
 
-  Future<void> toggleTodo(Todo todo) async {
-    state = const AsyncValue.loading();
+  Future<void> toggleCompleted(Todo todo) async {
     state = await AsyncValue.guard(
       () async {
         final todoRepository = ref.watch(todoRepositoryProvider);
@@ -57,7 +50,6 @@ class TodoListNotifier extends AsyncNotifier<List<Todo>> {
   }
 
   Future<void> deleteTodo(Todo todo) async {
-    state = const AsyncValue.loading();
     state = await AsyncValue.guard(
       () async {
         final todoRepository = ref.watch(todoRepositoryProvider);

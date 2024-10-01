@@ -31,12 +31,12 @@ class TodoListTile extends ConsumerWidget {
     return ListTile(
       title: Text(todo.description),
       onLongPress: () {
-        ref.watch(todoListNotifierProvider.notifier).deleteTodo(todo);
+        ref.watch(todoListProvider.notifier).deleteTodo(todo);
       },
       trailing: Checkbox(
         value: todo.completed,
         onChanged: (value) {
-          ref.watch(todoListNotifierProvider.notifier).toggleTodo(todo);
+          ref.watch(todoListProvider.notifier).toggleCompleted(todo);
         },
       ),
     );

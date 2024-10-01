@@ -5,9 +5,7 @@ import 'package:todo_application/infrastructures/sqflite.dart';
 import 'package:todo_application/models/todo_model.dart';
 
 final todoRepositoryProvider = Provider<TodoRepository>(
-  (ref) {
-    return TodoRepository(ref.watch(dbProvider));
-  },
+  (ref) => TodoRepository(ref.watch(dbProvider)),
 );
 
 class TodoRepository {
